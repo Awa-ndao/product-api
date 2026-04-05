@@ -15,7 +15,7 @@ build:
   stage: build
   image: maven:3.9.6-eclipse-temurin-17
   script:
-    - echo "Build skipped - JAR deja present dans image Docker"
+    - echo "Build skipped - image deja disponible sur Docker Hub"
   only:
     - develop
 
@@ -28,7 +28,8 @@ docker:
     DOCKER_TLS_CERTDIR: "/certs"
   script:
     - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-    - docker build -t $DOCKER_IMAGE:latest .
+    - docker pull $DOCKER_IMAGE:latest
+    - docker tag $DOCKER_IMAGE:latest $DOCKER_IMAGE:latest
     - docker push $DOCKER_IMAGE:latest
   only:
     - develop
